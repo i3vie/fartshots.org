@@ -1,39 +1,29 @@
+// -- dont touch zone
+
 const express = require('express');
 const app = express();
 const port = 3000;
-
-// -- dont touch the webhook code\
-// -- but it's a good example of how to use a router
 const webhookRouter = require('./webhook_dont_touch/webhook');
 app.use('/webhook', webhookRouter);
-// -- this is CI/CD in the 21st century
 
-app.use(express.json()); // middleware to parse JSON request bodies
-app.set('view engine', 'ejs'); // set EJS as the view engine
-app.set('trust proxy', true); // do not touch this, it is required to get the correct client IP address when behind a proxy
+app.use(express.json());
+app.set('view engine', 'ejs');
+app.set('trust proxy', true);
 
-// serve static files from the "public" directory as "public"
 app.use(express.static('public'));
 
-/// this will render views/index.ejs and pass the client's IP address as the "host" variable
-/// when you access the root URL (/) of the server
+// -- do touch zone
+
 app.get('/', (req, res) => {
-  const host = req.ip;
-  res.render('index', { host });
+    res.render('index', { host: req.ip });
 });
 
-/// simple route that responds with "Hello, [name]!" when you access /hello/:name
-app.get('/hello/:name', (req, res) => {
-  const name = req.params.name;
-  res.send(`Hello, ${name}!`);
-});
-
-/// log request body for POST requests to /log and respond with "Logged!"
-app.post('/log', (req, res) => {
-  console.log(req.body);
-  res.send('Logged!');
-});
-
+app.use('/example', require('./routers/example'));
+// Take a look at routers/example.js for an example of how to make a new router
+// You can make as many routers as you want, just put them in the routers folder and add a line here to use them
+// Any routes defined in the router will be prefixed with the first argument of app.use, in this case '/example'
+// so if you define a route '/test' in the example router, it will be accessible at '/example/test' on the site
+// I hope this makes sense
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
