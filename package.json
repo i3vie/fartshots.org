@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "ejs": "^5.0.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "tsx": "^4.21.0"
   },
   "packageManager": "pnpm@10.33.0",
   "devDependencies": {
