@@ -51,7 +51,7 @@ router.post("/", (req, res) => {
     console.log("Deploy triggered");
 
     exec(
-        `cd ${WORKDIR} && flock /tmp/deploy.lock -c "git pull && pm2 stop 0 && pm2 start 0"`,
+        `cd ${WORKDIR} && flock /tmp/deploy.lock -c "git pull && pm2 restart 0"`,
         (err, stdout, stderr) => {
             console.log(stdout);
             console.error(stderr);
