@@ -1,8 +1,9 @@
-const express = require("express");
-const crypto = require("crypto");
-const { exec } = require("child_process");
+import express, {type Request, type Router} from "express";
+import crypto from "node:crypto";
+import { exec } from "node:child_process";
 
-const router = express.Router();
+export const router: Router = express.Router();
+
 
 const SECRET = process.env.GITHUB_WEBHOOK_SECRET;
 const REPO = process.env.GITHUB_REPO; // "user/repo"
@@ -12,11 +13,11 @@ const WORKDIR = process.env.DEPLOY_DIR;
 // raw body capture for signature verification
 router.use(express.json({
     verify: (req, res, buf) => {
-        req.rawBody = buf;
+        (req as any).rawBody = buf;
     }
 }));
 
-function verifySignature(req) {
+function verifySignature(req: any) {
     const sig = req.headers["x-hub-signature-256"];
     if (!sig || !SECRET) return false;
 
@@ -64,5 +65,3 @@ router.post("/", (req, res) => {
         }
     );
 });
-
-module.exports = router;
