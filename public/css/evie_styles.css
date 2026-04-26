@@ -1,0 +1,30 @@
+:root {
+    background-color: #121212;
+    color: #eeeeee;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+}
+
+.info {
+    background-color: #009dff82;
+    padding: 10px;
+    border-left: #009dff 5px solid;
+    margin: 20px 0;
+    width: 35vw;
+}
+
+.warning {
+    background-color: #ffee0082;
+    padding: 10px;
+    border-left: #ffee00 5px solid;
+    margin: 20px 0;
+    width: 35vw;
+}
+
+.fatal {
+    background-color: #ff000082;
+    padding: 10px;
+    border-left: #ff0000 5px solid;
+    margin: 20px 0;
+    width: 35vw;
+}
