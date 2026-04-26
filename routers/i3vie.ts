@@ -1,8 +1,12 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router: Router = Router();
 
+interface Message {
+    message: string;
+    author: string;
+}
 // ring buffer for the last 10 messages
-const messages = [];
+const messages: Message[] = [];
 
 router.post('/message', (req, res) => {
     const { message, author } = req.body;
@@ -32,4 +36,4 @@ router.get('/', (req, res) => {
     }});
 });
 
-module.exports = router;
+export default router;

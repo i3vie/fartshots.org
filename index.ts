@@ -1,9 +1,10 @@
 // -- dont touch zone
 
-const express = require('express');
+import express from 'express';
 const app = express();
 const port = 3000;
-const webhookRouter = require('./webhook_dont_touch/webhook');
+import { router as webhookRouter } from './webhook_dont_touch/webhook.ts';
+
 app.use('/webhook', webhookRouter);
 
 app.use(express.json());
@@ -20,14 +21,16 @@ app.get('/', (req, res) => {
     res.render('index', { host: req.ip, nodeVersion });
 });
 
-app.use('/example', require('./routers/example'));
+import exampleRouter from "./routers/example.ts";
+app.use('/example', exampleRouter);
 // Take a look at routers/example.js for an example of how to make a new router
 // You can make as many routers as you want, just put them in the routers folder and add a line here to use them
 // Any routes defined in the router will be prefixed with the first argument of app.use, in this case '/example'
 // so if you define a route '/test' in the example router, it will be accessible at '/example/test' on the site
 // I hope this makes sense
 
-app.use('/i3vie', require('./routers/i3vie'));
+import i3vieRouter from "./routers/i3vie.ts";
+app.use('/i3vie', i3vieRouter);
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
