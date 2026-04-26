@@ -20,5 +20,6 @@
   "dependencies": {
     "ejs": "^5.0.2",
     "express": "^5.2.1"
-  }
+  },
+  "packageManager": "pnpm@10.33.0"
 }
