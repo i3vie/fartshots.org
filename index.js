@@ -4,6 +4,7 @@ const port = 3000;
 
 app.use(express.json()); // middleware to parse JSON request bodies
 app.set('view engine', 'ejs'); // set EJS as the view engine
+app.set('trust proxy', true); // do not touch this, it is required to get the correct client IP address when behind a proxy
 
 /// this will render views/index.ejs and pass the client's IP address as the "host" variable
 /// when you access the root URL (/) of the server
