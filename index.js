@@ -2,6 +2,12 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+// -- dont touch the webhook code\
+// -- but it's a good example of how to use a router
+const webhookRouter = require('./webhook_dont_touch/webhook');
+app.use('/webhook', webhookRouter);
+// -- this is CI/CD in the 21st century
+
 app.use(express.json()); // middleware to parse JSON request bodies
 app.set('view engine', 'ejs'); // set EJS as the view engine
 app.set('trust proxy', true); // do not touch this, it is required to get the correct client IP address when behind a proxy
