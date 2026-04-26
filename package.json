@@ -13,7 +13,7 @@
   "license": "MIT",
   "author": "",
   "type": "module",
-  "main": "index.mts",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
