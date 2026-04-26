@@ -5,28 +5,26 @@
     font-size: 13pt;
 }
 
-.info {
+.alert {
+    padding: 10pt;
+    margin: 20pt 0;
+    width: 35vw;
+    border-left: 5px solid;
+}
+
+.alert.info {
     background-color: #009dff82;
-    padding: 10pt;
-    border-left: #009dff 5px solid;
-    margin: 20pt 0;
-    width: 35vw;
+    border-left-color: #009dff;
 }
 
-.warning {
+.alert.warning {
     background-color: #ffee0082;
-    padding: 10px;
-    border-left: #ffee00 5px solid;
-    margin: 20pt 0;
-    width: 35vw;
+    border-left-color: #ffee00;
 }
 
-.fatal {
+.alert.fatal {
     background-color: #ff000082;
-    padding: 10pt;
-    border-left: #ff0000 5px solid;
-    margin: 20pt 0;
-    width: 35vw;
+    border-left-color: #ff0000;
 }
 
 a {
