@@ -41,11 +41,11 @@ router.post("/", (req, res) => {
     }
 
     if (req.body.repository?.full_name !== REPO) {
-        return res.send("wrong repo");
+        return res.status(401).send("wrong repo");
     }
 
     if (req.body.ref !== BRANCH) {
-        return res.send("wrong branch");
+        return res.status(401).send("wrong branch");
     }
 
     console.log("Deploy triggered");
