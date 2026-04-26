@@ -16,7 +16,8 @@ app.use(express.static('public'));
 // -- do touch zone
 
 app.get('/', (req, res) => {
-    res.render('index', { host: req.ip });
+    const nodeVersion = process.version;
+    res.render('index', { host: req.ip, nodeVersion });
 });
 
 app.use('/example', require('./routers/example'));
