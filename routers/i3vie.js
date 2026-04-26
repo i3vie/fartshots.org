@@ -26,4 +26,10 @@ router.get('/miab', (req, res) => {
     res.render("i3vie/message_in_a_bottle.ejs", { messages });
 });
 
+router.get('/', (req, res) => {
+    res.render("i3vie/index.ejs", { sites: {
+        "message in a bottle": "/i3vie/miab",
+    }});
+});
+
 module.exports = router;

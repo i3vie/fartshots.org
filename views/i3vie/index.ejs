@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>i3vie</title>
+        <link rel="stylesheet" href="/css/evie_styles.css">
+    </head>
+    <body>
+        <h1>hi here is my part of web site :&rpar;</h1>
+        <h2>here you can find a link to the parts i made</h2>
+        <% Object.entries(sites).forEach(([name, url]) => { %>
+            <a href="<%= url %>"><%= name %></a> <br>
+        <% }) %>
+    </body>
+</html>
