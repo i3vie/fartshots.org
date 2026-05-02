@@ -1,12 +1,20 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize, DataTypes, Model, type InferAttributes, type InferCreationAttributes } from "sequelize";
 
 export const sequelize = new Sequelize({
   dialect: "sqlite",
   storage: "./db/i3vie.sqlite",
 });
 
-export const User = sequelize.define(
-  "User",
+export class User extends Model<
+  InferAttributes<User>,
+  InferCreationAttributes<User>
+> {
+  declare id: string;
+  declare username: string;
+  declare password: string;
+}
+
+User.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -23,6 +31,10 @@ export const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     }
+  },
+  {
+    sequelize,
+    modelName: "User",
   }
 )
 
