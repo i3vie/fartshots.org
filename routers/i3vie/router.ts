@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { sequelize, User } from './db.ts';
 const router: Router = Router();
 
 interface Message {
