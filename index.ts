@@ -29,7 +29,7 @@ app.use('/example', exampleRouter);
 // so if you define a route '/test' in the example router, it will be accessible at '/example/test' on the site
 // I hope this makes sense
 
-import i3vieRouter from "./routers/i3vie.ts";
+import i3vieRouter from "./routers/i3vie/router.ts";
 app.use('/i3vie', i3vieRouter);
 
 app.listen(port, () => {
