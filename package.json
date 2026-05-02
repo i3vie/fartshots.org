@@ -18,8 +18,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@types/sequelize": "^4.28.20",
     "ejs": "^5.0.2",
     "express": "^5.2.1",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^6.0.1",
     "tsx": "^4.21.0"
   },
   "packageManager": "pnpm@10.33.0",
