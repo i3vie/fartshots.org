@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes, Model, type InferAttributes, type InferCreationAttributes } from "sequelize";
+import { Sequelize, DataTypes, Model, type InferAttributes, type InferCreationAttributes, type CreationOptional } from "sequelize";
 
 export const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -9,7 +9,7 @@ export class User extends Model<
   InferAttributes<User>,
   InferCreationAttributes<User>
 > {
-  declare id: string;
+  declare id: CreationOptional<string>;
   declare username: string;
   declare password: string;
 }
