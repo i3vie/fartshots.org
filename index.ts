@@ -32,6 +32,15 @@ app.use('/example', exampleRouter);
 import i3vieRouter from "./routers/i3vie/router.ts";
 app.use('/i3vie', i3vieRouter);
 
-app.listen(port, () => {
-  console.log(`listening on port ${port}`);
-});
+// If you use a DB or something that needs an async init step, add it here
+import { initDB } from './routers/i3vie/db.ts';
+
+async function start() {
+    await initDB();
+
+    // Do your init step here, then start the server
+    
+    app.listen(port, () => {
+        console.log(`listening on port ${port}`);
+    });
+}
