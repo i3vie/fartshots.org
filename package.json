@@ -18,6 +18,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/sequelize": "^4.28.20",
     "ejs": "^5.0.2",
     "express": "^5.2.1",
