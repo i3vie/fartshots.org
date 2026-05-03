@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0",
     "ejs": "^5.0.2",
     "express": "^5.2.1",
     "sequelize": "^6.37.8",
