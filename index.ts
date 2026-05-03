@@ -44,3 +44,5 @@ async function start() {
         console.log(`listening on port ${port}`);
     });
 }
+
+start();
