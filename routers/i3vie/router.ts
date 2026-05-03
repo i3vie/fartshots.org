@@ -1,8 +1,4 @@
 import { Router } from 'express';
-import { sequelize, User } from './db.ts';
-import { hash, compare } from 'bcrypt';
-import { normalizeUsername } from './helper.ts';
-import { UniqueConstraintError } from 'sequelize';
 const router: Router = Router();
 
 interface Message {
@@ -34,70 +30,6 @@ router.get('/miab', (req, res) => {
     res.render("i3vie/message_in_a_bottle.ejs", { messages });
 });
 
-router.post('/api/login', async (req, res) => {
-    let { username, password } = req.body;
-
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password are required' });
-    }
-
-    username = normalizeUsername(String(username));
-
-    const user = await User.findOne({ where: { username } });
-
-    if (!user) {
-        return res.status(401).json({ error: 'Invalid username or password' });
-    }
-
-    try {
-        const passwordMatch = await compare(String(password), user.password);
-
-        if (!passwordMatch) {
-            return res.status(401).json({ error: 'Invalid username or password' });
-        }
-    } catch (e) {
-        return res.status(500).json({ error: 'Internal server error' });
-    }
-
-    res.json({ message: 'Login successful' });
-});
-
-router.post('/api/register', async (req, res) => {
-    let { username, password } = req.body;
-
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password are required' });
-    }
-
-    username = normalizeUsername(String(username));
-
-    if (!username) {
-        return res.status(400).json({ error: 'Invalid username' });
-    }
-
-    let hashedPassword: string;
-
-    try {
-        hashedPassword = await hash(String(password), 10); // from Bcrypt
-    } catch (e) {
-        return res.status(500).json({ error: 'Error hashing password' });
-    }
-
-    try {
-        const user = await User.create({
-            username,
-            password: hashedPassword,
-        });
-        res.json({ message: 'Registration successful', userId: user.id });
-    } catch (error: unknown) {
-        if (error instanceof UniqueConstraintError) {
-            return res.status(409).json({ error: 'Username already exists' });
-        }
-
-        return res.status(500).json({ error: 'Error registering user' });
-    }
-});
-
 router.get('/', (req, res) => {
     res.render("i3vie/index.ejs", {
         sites: {
@@ -105,5 +37,9 @@ router.get('/', (req, res) => {
         }
     });
 });
+
+// mount the api_router to /api within this router
+import apiRouter from './api_router.ts';
+router.use("/api", apiRouter);
 
 export default router;
