@@ -11,9 +11,6 @@ importers:
       '@types/bcrypt':
         specifier: ^6.0.0
         version: 6.0.0
-      '@types/sequelize':
-        specifier: ^6.12.0
-        version: 6.12.0(sqlite3@6.0.1)
       ejs:
         specifier: ^5.0.2
         version: 5.0.2
@@ -231,10 +228,6 @@ packages:
 
   '@types/send@1.2.1':
     resolution: {integrity: sha512-arsCikDvlU99zl1g69TcAB3mzZPpxgw0UQnaHeC1Nwb015xp8bknZv5rIfri9xTOcMuaVgvabfIRA7PSZVuZIQ==}
-
-  '@types/sequelize@6.12.0':
-    resolution: {integrity: sha512-rJRUf3AkP356HicHSjM2I7+d0FiLvOPZdDxFY0bhmKiZnGOuZZ1cUcDlPyyin9b3pYFvxZfJUTC3nGXLoi6DWA==}
-    deprecated: This is a stub types definition. sequelize provides its own type definitions, so you do not need this installed.
 
   '@types/serve-static@2.2.0':
     resolution: {integrity: sha512-8mam4H1NHLtu7nmtalF7eyBH14QyOASmcxHhSfEoRyr0nP/YdoesEtU+uSRvMe96TW/HPTtkoKqQLl53N7UXMQ==}
@@ -932,21 +925,6 @@ snapshots:
   '@types/send@1.2.1':
     dependencies:
       '@types/node': 25.6.0
-
-  '@types/sequelize@6.12.0(sqlite3@6.0.1)':
-    dependencies:
-      sequelize: 6.37.8(sqlite3@6.0.1)
-    transitivePeerDependencies:
-      - ibm_db
-      - mariadb
-      - mysql2
-      - oracledb
-      - pg
-      - pg-hstore
-      - snowflake-sdk
-      - sqlite3
-      - supports-color
-      - tedious
 
   '@types/serve-static@2.2.0':
     dependencies:
