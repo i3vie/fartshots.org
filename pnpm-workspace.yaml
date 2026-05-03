@@ -1,0 +1,4 @@
+allowBuilds:
+  bcrypt: true
+  esbuild: false
+  sqlite3: true
