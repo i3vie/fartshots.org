@@ -71,6 +71,10 @@ router.post('/api/register', async (req, res) => {
 
     username = normalizeUsername(String(username));
 
+    if (!username) {
+        return res.status(400).json({ error: 'Invalid username' });
+    }
+
     let hashedPassword: string;
 
     try {
