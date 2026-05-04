@@ -1,5 +1,7 @@
 import { Router } from 'express';
 const router: Router = Router();
+import { verifyUserSession, getUserBySessionToken } from './session.ts';
+import { User } from './db.ts';
 
 interface Message {
     message: string;
@@ -8,14 +10,22 @@ interface Message {
 // ring buffer for the last 10 messages
 const messages: Message[] = [];
 
-router.post('/message', (req, res) => {
-    const { message, author } = req.body;
+router.post('/message', async (req, res) => {
+    const { message, token } = req.body;
     if (!message) {
         return res.status(400).json({ error: 'Message is required' });
     }
-    if (!author) {
-        return res.status(400).json({ error: 'Author is required' });
+    if (!token) {
+        return res.redirect('/i3vie/login');
     }
+
+    // Verify the user session
+    const user = await getUserBySessionToken(token);
+    if (!user) {
+        return res.redirect('/i3vie/login');
+    }
+
+    const author = user.username;
 
     // add the message to the buffer
     messages.push({ message, author });

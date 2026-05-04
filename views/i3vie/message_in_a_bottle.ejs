@@ -14,9 +14,10 @@
         <form action="/i3vie/message" method="post">
             <label for="message">Submit a message:</label><br>
             <input type="text" id="message" name="message"><br>
-            <label for="author">Your name:</label><br>
-            <input type="text" id="author" name="author"><br>
             <input type="submit" value="Submit">
+            <input type="hidden" name="token" value="" id="token">
         </form>
+
+        <script src="/js/i3vie/message_in_a_bottle.js"></script>
     </body>
 </html>
