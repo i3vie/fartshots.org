@@ -38,6 +38,44 @@ User.init(
   }
 )
 
+export class Session extends Model<
+  InferAttributes<Session>,
+  InferCreationAttributes<Session>
+> {
+  declare userId: string;
+  declare token: string;
+  declare expiresAt: Date;
+}
+
+Session.init(
+  {
+    userId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
+    token: {
+      type: DataTypes.STRING(40),
+      allowNull: false,
+      unique: true,
+    },
+    expiresAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    }
+  },
+  {
+    sequelize,
+    modelName: "Session",
+    indexes: [
+      { fields: ['userId'] },
+      { fields: ['token'] }, // this is technically redundant since token is unique, but it doesn't hurt to be explicit
+      { fields: ['expiresAt'] }
+    ]
+  }
+)
+
+
+
 export async function initDB() {
   await sequelize.sync();
 }

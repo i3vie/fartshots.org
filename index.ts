@@ -34,9 +34,11 @@ app.use('/i3vie', i3vieRouter);
 
 // If you use a DB or something that needs an async init step, add it here
 import { initDB } from './routers/i3vie/db.ts';
+import { startSessionCleanupInterval } from './routers/i3vie/session.ts';
 
 async function start() {
     await initDB();
+    await startSessionCleanupInterval();
 
     // Do your init step here, then start the server
     
