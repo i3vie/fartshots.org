@@ -31,12 +31,14 @@ apiRouter.post('/v1/login', loginLimiter, async (req, res) => {
 
     username = normalizeUsername(String(username));
 
+    if (!username) {
+        return res.status(400).json({ error: 'Invalid username' });
+    }
+
     const user = await User.findOne({ where: { username } });
 
     if (!user) {
-        // Pass back to the register route with the username and password
-        return res.redirect(307, '/i3vie/api/v1/register'); // 307 preserves the method and body.
-        // Worth noting that register will then pass back to login with the same username and password after creation
+        return res.status(401).json({ error: 'Invalid username or password' });
     }
 
     try {
@@ -46,10 +48,10 @@ apiRouter.post('/v1/login', loginLimiter, async (req, res) => {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
     } catch (e) {
+        // Bcrypt shouldn't really throw?..
         return res.status(500).json({ error: 'Internal server error' });
     }
 
-    // If we haven't returned it's successful
     const session = await createSession(user);
     res.json({ success: true, token: session.token, expiresAt: session.expiresAt });
 });
@@ -76,12 +78,11 @@ apiRouter.post('/v1/register', registerLimiter, async (req, res) => {
     }
 
     try {
-        const user = await User.create({
+        await User.create({
             username,
             password: hashedPassword,
         });
-        // Pass back to the login route with the username and password
-        res.redirect(307, '/i3vie/api/v1/login'); // 307 preserves the method and body
+        res.status(201).json({ success: true, message: 'Registration successful' });
     } catch (error: unknown) {
         if (error instanceof UniqueConstraintError) {
             return res.status(409).json({ error: 'Username already exists' });
