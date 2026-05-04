@@ -1,7 +1,6 @@
 import { Router } from 'express';
 const router: Router = Router();
-import { verifyUserSession, getUserBySessionToken } from './session.ts';
-import { User } from './db.ts';
+import { getSessionTokenFromRequest, getUserBySessionToken } from './session.ts';
 
 interface Message {
     message: string;
@@ -11,10 +10,11 @@ interface Message {
 const messages: Message[] = [];
 
 router.post('/message', async (req, res) => {
-    const { message, token } = req.body;
+    const { message } = req.body;
     if (!message) {
         return res.status(400).json({ error: 'Message is required' });
     }
+    const token = getSessionTokenFromRequest(req);
     if (!token) {
         return res.redirect('/i3vie/login');
     }
@@ -33,11 +33,21 @@ router.post('/message', async (req, res) => {
         messages.shift();
     }
 
-    res.redirect('/i3vie/miab');
+    return res.redirect('/i3vie/miab');
 });
 
-router.get('/miab', (req, res) => {
-    res.render("i3vie/message_in_a_bottle.ejs", { messages });
+router.get('/miab', async (req, res) => {
+    const token = getSessionTokenFromRequest(req);
+    if (!token) {
+        return res.redirect('/i3vie/login');
+    }
+
+    const user = await getUserBySessionToken(token);
+    if (!user) {
+        return res.redirect('/i3vie/login');
+    }
+
+    return res.render("i3vie/message_in_a_bottle.ejs", { messages });
 });
 
 router.get('/login', (req, res) => {

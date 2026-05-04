@@ -38,14 +38,13 @@ const authRequest = async (url, successText) => {
             return;
         }
 
-        if (responseData.token) {
-            setStatus('Login successful.', 'alert success');
-            localStorage.setItem("token", responseData.token);
-            setTimeout(() => {
-                window.location.href = '/i3vie/';
-            }, 2000);
-        } else if (responseData.success) {
+        if (responseData.success) {
             setStatus(successText || 'Operation completed successfully.', 'alert success');
+            if (url.endsWith('/login')) {
+                setTimeout(() => {
+                    window.location.href = '/i3vie/';
+                }, 1000);
+            }
         } else {
             setStatus('Operation completed successfully.', 'alert success');
         }
