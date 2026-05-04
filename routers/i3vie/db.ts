@@ -80,7 +80,9 @@ Session.init(
   }
 )
 
-
+// Define associations
+Session.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Session, { foreignKey: 'userId' });
 
 export async function initDB() {
   await sequelize.sync();
