@@ -27,6 +27,11 @@
     border-left-color: #ff0000;
 }
 
+.alert.success {
+    background-color: #00ff0082;
+    border-left-color: #00ff00;
+}
+
 a {
     color: #eee;
     background-color: #4d9dff7b;
