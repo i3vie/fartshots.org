@@ -4,21 +4,22 @@ import { normalizeUsername } from './helper.ts';
 import { UniqueConstraintError } from 'sequelize';
 import { Router } from 'express';
 import { createSession } from './session.ts';
-import { rateLimit } from 'express-rate-limit';
+import { slowDown } from 'express-slow-down';
 const apiRouter: Router = Router();
 
 // Rate limit login attempts
-const loginLimiter = rateLimit({
+const loginLimiter = slowDown({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // limit each IP to 5 requests per windowMs
-    message: 'Too many login attempts, please try again later.'
+    delayAfter: 5, // 5 requests per IP per 15 minutes before slowing down
+    delayMs: (hits) => (hits * hits) / 2 // after passing the threshold, delay increases quadratically (0.5s, 2s, 4.5s, etc)
+
 });
 
 // Registers are tighter
-const registerLimiter = rateLimit({
-    windowMs: 2 * 60 * 60 * 1000, // 2 hours
-    max: 3, // limit each IP to 3 requests per windowMs
-    message: 'Too many accounts created from this IP, please try again later.'
+const registerLimiter = slowDown({
+    windowMs: 1 * 60 * 60 * 1000, // 1 hour
+    delayAfter: 3, // 3 requests per IP per 1 hour before slowing down
+    delayMs: (hits) => hits * hits * 1.5 * 1000 // 1.5s, 6s, 13.5s, etc. harsher for registration
 });
 
 apiRouter.post('/v1/login', loginLimiter, async (req, res) => {
