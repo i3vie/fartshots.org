@@ -10,7 +10,7 @@ const apiRouter: Router = Router();
 // Rate limit login attempts
 const loginLimiter = slowDown({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    delayAfter: 5, // 5 requests per IP per 15 minutes before slowing down
+    delayAfter: 14, // 5 requests per IP per 15 minutes before slowing down
     delayMs: (hits) => (hits * hits) / 2 // after passing the threshold, delay increases quadratically (0.5s, 2s, 4.5s, etc)
 
 });
@@ -18,7 +18,7 @@ const loginLimiter = slowDown({
 // Registers are tighter
 const registerLimiter = slowDown({
     windowMs: 1 * 60 * 60 * 1000, // 1 hour
-    delayAfter: 3, // 3 requests per IP per 1 hour before slowing down
+    delayAfter: 7, // 3 requests per IP per 1 hour before slowing down
     delayMs: (hits) => hits * hits * 1.5 * 1000 // 1.5s, 6s, 13.5s, etc. harsher for registration
 });
 
