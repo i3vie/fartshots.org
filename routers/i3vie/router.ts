@@ -30,10 +30,19 @@ router.get('/miab', (req, res) => {
     res.render("i3vie/message_in_a_bottle.ejs", { messages });
 });
 
+router.get('/login', (req, res) => {
+    res.render("i3vie/login_register.ejs");
+});
+
+router.get('/register', (req, res) => {
+    res.redirect('/i3vie/login');
+});
+
 router.get('/', (req, res) => {
     res.render("i3vie/index.ejs", {
         sites: {
             "message in a bottle": "/i3vie/miab",
+            "login/register": "/i3vie/login",
         }
     });
 });
