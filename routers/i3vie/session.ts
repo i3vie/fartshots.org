@@ -1,6 +1,9 @@
 import crypto from 'crypto';
 import { sequelize, User, Session } from './db.ts';
 import { Op } from 'sequelize';
+import type { CookieOptions, Request, Response } from 'express';
+
+export const SESSION_COOKIE_NAME = 'i3vie_session';
 
 /**
  * Manually cleans up any sessions in the db whose expiresAt is in
@@ -54,11 +57,26 @@ export function createSession(user: User, expiresInMs: number = 3 * 24 * 60 * 60
 }
 
 export function getSessionByToken(token: string): Promise<Session | null> {
-    return Session.findOne({ where: { token } });
+    return Session.findOne({
+        where: {
+            token,
+            expiresAt: {
+                [Op.gt]: new Date()
+            }
+        }
+    });
 }
 
 export function getUserBySessionToken(token: string): Promise<User | null> {
-    return Session.findOne({ where: { token }, include: User })
+    return Session.findOne({
+        where: {
+            token,
+            expiresAt: {
+                [Op.gt]: new Date()
+            }
+        },
+        include: User
+    })
         .then(session => session ? session.get('User') as User : null);
 }
 
@@ -67,6 +85,69 @@ export function getUserSessions(userId: string): Promise<Session[]> {
 }
 
 export function verifyUserSession(token: string, user: User): Promise<Boolean> {
-    return Session.findOne({ where: { token, userId: user.id } })
+    return Session.findOne({
+        where: {
+            token,
+            userId: user.id,
+            expiresAt: {
+                [Op.gt]: new Date()
+            }
+        }
+    })
         .then(session => !!session);
+}
+
+export function destroySessionByToken(token: string): Promise<number> {
+    return Session.destroy({ where: { token } });
+}
+
+export function getSessionTokenFromRequest(req: Request): string | null {
+    const cookieHeader = req.headers.cookie;
+    if (!cookieHeader) {
+        return null;
+    }
+
+    for (const cookie of cookieHeader.split(';')) {
+        const separatorIndex = cookie.indexOf('=');
+        if (separatorIndex === -1) {
+            continue;
+        }
+
+        const name = cookie.slice(0, separatorIndex).trim();
+        if (name !== SESSION_COOKIE_NAME) {
+            continue;
+        }
+
+        const value = cookie.slice(separatorIndex + 1).trim();
+        try {
+            return decodeURIComponent(value);
+        } catch {
+            return null;
+        }
+    }
+
+    return null;
+}
+
+function getSessionCookieOptions(secure: boolean, expires?: Date): CookieOptions {
+    const options: CookieOptions = {
+        httpOnly: true,
+        secure,
+        sameSite: 'lax',
+        path: '/i3vie',
+    };
+
+    if (expires) {
+        options.expires = expires;
+    }
+
+    return options;
+}
+
+export function setSessionCookie(res: Response, session: Session, secure: boolean) {
+    res.cookie(SESSION_COOKIE_NAME, session.token, getSessionCookieOptions(secure, session.expiresAt));
+}
+
+export function clearSessionCookie(res: Response, secure: boolean) {
+    res.clearCookie(SESSION_COOKIE_NAME, getSessionCookieOptions(secure));
 }

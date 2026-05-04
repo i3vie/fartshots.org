@@ -3,9 +3,14 @@ import { hash, compare } from 'bcrypt';
 import { normalizeUsername } from './helper.ts';
 import { UniqueConstraintError } from 'sequelize';
 import { Router } from 'express';
-import { createSession } from './session.ts';
+import type { Request } from 'express';
+import { clearSessionCookie, createSession, destroySessionByToken, getSessionTokenFromRequest, setSessionCookie } from './session.ts';
 import { slowDown } from 'express-slow-down';
 const apiRouter: Router = Router();
+
+function isSecureRequest(req: Request): boolean {
+    return Boolean(req.secure || req.get('x-forwarded-proto') === 'https');
+}
 
 // Rate limit login attempts
 const loginLimiter = slowDown({
@@ -53,7 +58,18 @@ apiRouter.post('/v1/login', loginLimiter, async (req, res) => {
     }
 
     const session = await createSession(user);
-    res.json({ success: true, token: session.token, expiresAt: session.expiresAt });
+    setSessionCookie(res, session, isSecureRequest(req));
+    res.json({ success: true, expiresAt: session.expiresAt });
+});
+
+apiRouter.post('/v1/logout', async (req, res) => {
+    const token = getSessionTokenFromRequest(req);
+    if (token) {
+        await destroySessionByToken(token);
+    }
+
+    clearSessionCookie(res, isSecureRequest(req));
+    res.json({ success: true });
 });
 
 apiRouter.post('/v1/register', registerLimiter, async (req, res) => {
