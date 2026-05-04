@@ -65,3 +65,8 @@ export function getUserBySessionToken(token: string): Promise<User | null> {
 export function getUserSessions(userId: string): Promise<Session[]> {
     return Session.findAll({ where: { userId } });
 }
+
+export function verifyUserSession(token: string, user: User): Promise<Boolean> {
+    return Session.findOne({ where: { token, userId: user.id } })
+        .then(session => !!session);
+}

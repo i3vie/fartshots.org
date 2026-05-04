@@ -3,6 +3,7 @@ import { hash, compare } from 'bcrypt';
 import { normalizeUsername } from './helper.ts';
 import { UniqueConstraintError } from 'sequelize';
 import { Router } from 'express';
+import { createSession } from './session.ts';
 const apiRouter: Router = Router();
 
 apiRouter.post('/v1/login', async (req, res) => {
@@ -30,7 +31,9 @@ apiRouter.post('/v1/login', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 
-    res.json({ message: 'Login successful' });
+    // If we haven't returned it's successful
+    const session = await createSession(user);
+    res.json({ success: true, token: session.token, expiresAt: session.expiresAt });
 });
 
 apiRouter.post('/v1/register', async (req, res) => {
