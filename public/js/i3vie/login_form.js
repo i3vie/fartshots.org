@@ -37,14 +37,14 @@ const authRequest = async (url, successText) => {
             return;
         }
 
-        if (responseData.success) {
-            setStatus(successText || 'Operation completed successfully.');
-        } else if (responseData.token) {
+        if (responseData.token) {
             setStatus('Login successful.');
             localStorage.setItem("token", responseData.token);
             setTimeout(() => {
                 window.location.href = '/i3vie/';
             }, 1000);
+        } else if (responseData.success) {
+            setStatus(successText || 'Operation completed successfully.');
         } else {
             setStatus('Operation completed successfully.');
         }
