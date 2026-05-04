@@ -42,6 +42,7 @@ export class Session extends Model<
   InferAttributes<Session>,
   InferCreationAttributes<Session>
 > {
+  declare id: CreationOptional<string>;
   declare userId: string;
   declare token: string;
   declare expiresAt: Date;
@@ -49,9 +50,14 @@ export class Session extends Model<
 
 Session.init(
   {
-    userId: {
+    id: {
       type: DataTypes.UUID,
       primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false,
     },
     token: {
       type: DataTypes.STRING(40),
