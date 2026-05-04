@@ -6,10 +6,11 @@ const loginButton = document.querySelector('#lr-form #login-btn');
 const registerButton = document.querySelector('#lr-form #register-btn');
 const statusBox = document.getElementById('status');
 
-const setStatus = (message, isError = false) => {
+const setStatus = (message, classList) => {
     if (!statusBox) return;
+    statusBox.hidden = false;
     statusBox.textContent = message;
-    statusBox.style.color = isError ? '#b00' : '#080';
+    statusBox.className = classList;
 };
 
 const authRequest = async (url, successText) => {
@@ -17,7 +18,7 @@ const authRequest = async (url, successText) => {
     const password = passwordField.value;
 
     if (!username || !password) {
-        setStatus('Username and password are required.', true);
+        setStatus('Username and password are required.', 'alert fatal');
         return;
     }
 
@@ -33,24 +34,24 @@ const authRequest = async (url, successText) => {
         const responseData = await response.json().catch(() => ({ error: 'Unexpected response' }));
 
         if (!response.ok) {
-            setStatus(responseData.error || 'Authentication failed.', true);
+            setStatus(responseData.error || 'Authentication failed.', 'alert fatal');
             return;
         }
 
         if (responseData.token) {
-            setStatus('Login successful.');
+            setStatus('Login successful.', 'alert success');
             localStorage.setItem("token", responseData.token);
             setTimeout(() => {
                 window.location.href = '/i3vie/';
-            }, 1000);
+            }, 2000);
         } else if (responseData.success) {
-            setStatus(successText || 'Operation completed successfully.');
+            setStatus(successText || 'Operation completed successfully.', 'alert success');
         } else {
-            setStatus('Operation completed successfully.');
+            setStatus('Operation completed successfully.', 'alert success');
         }
     } catch (error) {
         console.error('Error during authentication:', error);
-        setStatus('Network or server error. Please try again.', true);
+        setStatus('Network or server error. Please try again.', 'alert fatal');
     }
 };
 
