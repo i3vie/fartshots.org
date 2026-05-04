@@ -4,9 +4,24 @@ import { normalizeUsername } from './helper.ts';
 import { UniqueConstraintError } from 'sequelize';
 import { Router } from 'express';
 import { createSession } from './session.ts';
+import { rateLimit } from 'express-rate-limit';
 const apiRouter: Router = Router();
 
-apiRouter.post('/v1/login', async (req, res) => {
+// Rate limit login attempts
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 requests per windowMs
+    message: 'Too many login attempts, please try again later.'
+});
+
+// Registers are tighter
+const registerLimiter = rateLimit({
+    windowMs: 2 * 60 * 60 * 1000, // 2 hours
+    max: 3, // limit each IP to 3 requests per windowMs
+    message: 'Too many accounts created from this IP, please try again later.'
+});
+
+apiRouter.post('/v1/login', loginLimiter, async (req, res) => {
     let { username, password } = req.body;
 
     if (!username || !password) {
@@ -38,7 +53,7 @@ apiRouter.post('/v1/login', async (req, res) => {
     res.json({ success: true, token: session.token, expiresAt: session.expiresAt });
 });
 
-apiRouter.post('/v1/register', async (req, res) => {
+apiRouter.post('/v1/register', registerLimiter, async (req, res) => {
     let { username, password } = req.body;
 
     if (!username || !password) {
