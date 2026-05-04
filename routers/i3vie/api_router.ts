@@ -18,7 +18,9 @@ apiRouter.post('/v1/login', async (req, res) => {
     const user = await User.findOne({ where: { username } });
 
     if (!user) {
-        return res.status(401).json({ error: 'Invalid username or password' });
+        // Pass back to the register route with the username and password
+        return res.redirect(307, '/i3vie/api/v1/register'); // 307 preserves the method and body.
+        // Worth noting that register will then pass back to login with the same username and password after creation
     }
 
     try {
