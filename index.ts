@@ -10,7 +10,7 @@ app.use('/webhook', webhookRouter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
-app.set('trust proxy', true);
+app.set('trust proxy', 2); // trust first 2 proxies, since we're behind cloudflare and then our own nginx proxy
 
 app.use(express.static('public'));
 
