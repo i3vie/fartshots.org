@@ -47,10 +47,10 @@ export function startSessionCleanupInterval(intervalMs: number = 60 * 60 * 1000)
 
 /**
  * crypto.randomBytes session token generator
- * @returns A 40-character random string to be used as a session token
+ * @returns An 80-character random string to be used as a session token
  */
 export function generateSessionToken(): string {
-    return crypto.randomBytes(40).toString('hex');
+    return crypto.randomBytes(40).toString('hex'); // 40 bytes = 80 hex characters
 }
 
 export function createSession(user: User, expiresInMs: number = 3 * 24 * 60 * 60 * 1000): Promise<Session> {
