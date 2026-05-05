@@ -13,6 +13,13 @@ const setStatus = (message, classList) => {
     statusBox.className = classList;
 };
 
+const getLastPart = (url) => {
+    var parts = url.split("/");
+    return (url.lastIndexOf('/') !== url.length - 1 
+       ? parts[parts.length - 1]
+       : parts[parts.length - 2]);
+};
+
 const authRequest = async (url, successText) => {
     const username = usernameField.value.trim();
     const password = passwordField.value;
@@ -40,7 +47,7 @@ const authRequest = async (url, successText) => {
 
         if (responseData.success) {
             setStatus(successText || 'Operation completed successfully.', 'alert success');
-            if (url.endsWith('/login')) {
+            if (getLastPart(url).startsWith('login')) {
                 setTimeout(() => {
                     window.location.href = '/i3vie/';
                 }, 1000);
