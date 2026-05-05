@@ -32,8 +32,16 @@ export async function cleanupSessions() {
  * @param intervalMs How often to run the cleanup in milliseconds. Default is 1 hour `(60 * 60 * 1000 ms)`
  */
 export function startSessionCleanupInterval(intervalMs: number = 60 * 60 * 1000) {
-    cleanupSessions(); // run once immediately on startup
-    setInterval(cleanupSessions, intervalMs);
+    void cleanupSessions().catch((error) => {
+        console.error('Failed to clean up sessions on startup:', error);
+    }); // run once immediately on startup
+
+    setInterval(() => {
+        void cleanupSessions().catch((error) => {
+            console.error('Failed to clean up sessions during scheduled cleanup:', error);
+        });
+    }, intervalMs);
+
     return true;
 }
 
