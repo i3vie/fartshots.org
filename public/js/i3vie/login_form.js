@@ -1,9 +1,9 @@
 // Yes, I know HTML supports native forms
 // This is more of an SPA type thing
-const usernameField = document.querySelector('#lr-form #username');
-const passwordField = document.querySelector('#lr-form #password');
-const loginButton = document.querySelector('#lr-form #login-btn');
-const registerButton = document.querySelector('#lr-form #register-btn');
+const usernameField = document.getElementById('username');
+const passwordField = document.getElementById('password');
+const loginButton = document.getElementById('login-btn');
+const registerButton = document.getElementById('register-btn');
 const statusBox = document.getElementById('status');
 
 const setStatus = (message, classList) => {
