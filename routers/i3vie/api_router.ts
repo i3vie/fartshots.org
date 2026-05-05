@@ -9,7 +9,7 @@ import { slowDown } from 'express-slow-down';
 const apiRouter: Router = Router();
 
 function isSecureRequest(req: Request): boolean {
-    return Boolean(req.secure || req.get('x-forwarded-proto') === 'https');
+    return Boolean(req.secure);
 }
 
 // Rate limit login attempts
