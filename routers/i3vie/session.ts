@@ -92,7 +92,7 @@ export function getUserSessions(userId: string): Promise<Session[]> {
     return Session.findAll({ where: { userId } });
 }
 
-export function verifyUserSession(token: string, user: User): Promise<Boolean> {
+export function verifyUserSession(token: string, user: User): Promise<boolean> {
     return Session.findOne({
         where: {
             token,
