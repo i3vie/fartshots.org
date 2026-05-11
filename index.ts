@@ -3,9 +3,11 @@
 import express from 'express';
 const app = express();
 const port = 3000;
+import { express as useragent } from 'express-useragent';
 import { router as webhookRouter } from './webhook_dont_touch/webhook.ts';
 
 app.use('/webhook', webhookRouter);
+app.use(useragent());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,7 +20,7 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     const nodeVersion = process.version;
-    res.render('index', { host: req.ip, nodeVersion });
+    res.render('index', { host: req.ip, nodeVersion, useragent: req.useragent });
 });
 
 import exampleRouter from "./routers/example.ts";
