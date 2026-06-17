@@ -67,6 +67,7 @@ router.get('/', (req, res) => {
         sites: {
             "message in a bottle": "/i3vie/miab",
             "login/register": "/i3vie/login",
+            "fun and games": "/i3vie/fun_and_games"
         }
     });
 });
