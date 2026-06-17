@@ -50,6 +50,10 @@ router.get('/miab', async (req, res) => {
     return res.render("i3vie/message_in_a_bottle.ejs", { messages });
 });
 
+router.get('/fun_and_games', (req, res) => {
+    res.render("i3vie/fun_and_games.ejs");
+});
+
 router.get('/login', (req, res) => {
     res.render("i3vie/login_register.ejs");
 });
