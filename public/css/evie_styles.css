@@ -55,3 +55,9 @@ a:visited {
 a:hover {
     font-size: 1.1em;
 }
+
+#bouncySlider {
+    padding-top: 300pt;
+    transform: rotate(270deg);
+    width: 300pt;
+}
