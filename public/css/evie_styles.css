@@ -61,3 +61,34 @@ a:hover {
     transform: rotate(270deg);
     width: 300pt;
 }
+
+
+.spoiler {
+    background-color: #333333;
+    border-left-color: #555555;
+}
+
+.spoiler label {
+    cursor: pointer;
+    user-select: none;
+}
+
+.spoiler label::before {
+    content: "▸ ";
+}
+
+.spoiler input[type="checkbox"]:checked ~ label::before {
+    content: "▾ ";
+}
+
+.spoiler input[type="checkbox"] {
+    display: none;
+}
+
+.spoiler input[type="checkbox"]:checked ~ .content {
+    display: block !important;
+}
+
+.spoiler .content {
+    display: none;
+}
