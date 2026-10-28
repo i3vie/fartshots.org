@@ -146,3 +146,6 @@ vite.config.ts.timestamp-*
 *.sqlite
 *.sqlite-wal
 *.sqlite-shm
+
+# OOPS.
+ecosystem.config.cjs
